@@ -64,16 +64,23 @@ namespace SqdthUtils.PrefabSpawner.Editor
         private void OnGUI()
         {
             bool spawnablePopulated = spawnablePrefab.value != null;
-            if (spawnablePopulated && 
-                PrefabUtility.IsPartOfPrefabAsset(spawnablePrefab.value))
+            if (spawnablePopulated)
             {
-                spawnAsPrefab.style.display = DisplayStyle.Flex;
+                active.style.display = DisplayStyle.Flex;
+                if (PrefabUtility.IsPartOfPrefabAsset(spawnablePrefab.value))
+                {
+                    spawnAsPrefab.style.display = DisplayStyle.Flex;
+                }
+                else
+                {
+                    if (spawnAsPrefab.value) spawnAsPrefab.value = false;
+                    spawnAsPrefab.style.display = DisplayStyle.None;
+                }
             }
             else
             {
-                spawnAsPrefab.style.display = DisplayStyle.None;
-                if (spawnAsPrefab.value)
-                    spawnAsPrefab.value = false;
+                if (!active.value) active.value = false;
+                active.style.display = DisplayStyle.None;
             }
         }
 
