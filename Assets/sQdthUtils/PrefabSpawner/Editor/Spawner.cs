@@ -15,7 +15,6 @@ namespace SqdthUtils.PrefabSpawner.Editor
         private LayerMaskField raycastLayerMask;
         private Vector3Field minRotation;
         private Vector3Field maxRotation;
-        private MinMaxSlider scaleSlider;
         private ToolbarToggle alignToNormals;
         private ToolbarToggle spawnAsPrefab;
         private ToolbarToggle gridSnapped;
@@ -54,7 +53,6 @@ namespace SqdthUtils.PrefabSpawner.Editor
             parentTransform = rootVisualElement.Q<ObjectField>("ParentTransform");
             minRotation = rootVisualElement.Q<Vector3Field>("MinRotation");
             maxRotation = rootVisualElement.Q<Vector3Field>("MaxRotation");
-            scaleSlider = rootVisualElement.Q<MinMaxSlider>("ScaleSlider");
             alignToNormals = rootVisualElement.Q<ToolbarToggle>("SnapToGrid");
             spawnAsPrefab = rootVisualElement.Q<ToolbarToggle>("SpawnAsPrefab");
             gridSnapped = rootVisualElement.Q<ToolbarToggle>("SnapToGrid");
@@ -63,24 +61,33 @@ namespace SqdthUtils.PrefabSpawner.Editor
 
         private void OnGUI()
         {
+            if (spawnablePrefab == null) return;
             bool spawnablePopulated = spawnablePrefab.value != null;
             if (spawnablePopulated)
             {
-                active.style.display = DisplayStyle.Flex;
+                if (active.style.display != DisplayStyle.Flex)
+                    active.style.display = DisplayStyle.Flex;
+                
                 if (PrefabUtility.IsPartOfPrefabAsset(spawnablePrefab.value))
                 {
-                    spawnAsPrefab.style.display = DisplayStyle.Flex;
+                    if (spawnAsPrefab.style.display != DisplayStyle.Flex)
+                        spawnAsPrefab.style.display = DisplayStyle.Flex;
                 }
                 else
                 {
                     if (spawnAsPrefab.value) spawnAsPrefab.value = false;
-                    spawnAsPrefab.style.display = DisplayStyle.None;
+                    if (spawnAsPrefab.style.display != DisplayStyle.None)
+                        spawnAsPrefab.style.display = DisplayStyle.None;
                 }
             }
             else
             {
-                if (!active.value) active.value = false;
+                if (active.value) active.value = false;
                 active.style.display = DisplayStyle.None;
+                
+                if (spawnAsPrefab.value) spawnAsPrefab.value = false;
+                if (spawnAsPrefab.style.display != DisplayStyle.None)
+                    spawnAsPrefab.style.display = DisplayStyle.None;
             }
         }
 
@@ -142,9 +149,6 @@ namespace SqdthUtils.PrefabSpawner.Editor
                     // Set random rotation based on default rotation
                     go.transform.rotation = Quaternion.Euler(Vector3.zero + offset);
                 }
-                
-                // Set random scale
-                go.transform.localScale = Vector3.one * Random.Range(scaleSlider.value.x, scaleSlider.value.y);
             }
         }
 

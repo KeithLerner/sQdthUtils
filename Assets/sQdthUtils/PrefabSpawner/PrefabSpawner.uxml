@@ -17,6 +17,5 @@
         <ui:Label tabindex="-1" text="Modifications" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SpawningLabel" style="padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px; -unity-text-align: upper-left; -unity-font-style: bold; font-size: 14px;" />
         <ui:Vector3Field label="Minimum Rotation" name="MinRotation" x="0" y="0" z="0" style="padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; flex-direction: row; justify-content: flex-start; align-items: stretch; -unity-text-align: upper-left;" />
         <ui:Vector3Field label="Maximum Rotation" name="MaxRotation" x="0" y="0" z="0" style="padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; -unity-text-align: upper-left;" />
-        <ui:MinMaxSlider picking-mode="Ignore" label="Min/Max Scale" min-value="0.5" max-value="2" low-limit="0" high-limit="12" name="ScaleSlider" style="padding-top: 2px; padding-right: 2px; padding-bottom: 2px; padding-left: 2px; -unity-text-align: upper-left;" />
     </ui:VisualElement>
 </ui:UXML>
