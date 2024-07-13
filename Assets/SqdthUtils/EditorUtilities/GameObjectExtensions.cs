@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace SqdthUtils.EditorUtilities
 {
-    public static class DestroyExtensions
+    public static class GameObjectExtensions
     {
         public static void DestroyAllChildren(this GameObject target)
         {
@@ -27,7 +27,7 @@ namespace SqdthUtils.EditorUtilities
         /// Destroys all children of the selected GameObject.
         /// </summary>
         [MenuItem("GameObject/Destroy all children")]
-        public static void EditorDestroyChildren(MenuCommand command)
+        private static void EditorDestroyChildren(MenuCommand command)
         {
             GameObject go = (GameObject)command.context;
             Transform[] childTranforms = go.GetComponentsInChildren<Transform>();
@@ -50,7 +50,7 @@ namespace SqdthUtils.EditorUtilities
         /// <returns> <b>True</b> when a GameObject is selected,
         /// <b>false</b> otherwise. </returns>
         [MenuItem("GameObject/Destroy all children", true)]
-        static bool ValidateEditorDestroyChildren()
+        private static bool ValidateEditorDestroyChildren()
         {
             // Return false if no transform is selected.
             return Selection.activeTransform != null;
