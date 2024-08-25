@@ -93,7 +93,7 @@ namespace SqdthUtils.PrefabSpawner.Editor
 
         private void OnSceneGUI(SceneView obj)
         {
-            if (!active.value)
+            if (!active?.value ?? true)
             {
                 return;
             }
