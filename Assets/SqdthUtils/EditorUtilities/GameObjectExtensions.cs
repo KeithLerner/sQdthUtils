@@ -5,6 +5,43 @@ namespace SqdthUtils.EditorUtilities
 {
     public static class GameObjectExtensions
     {
+        #region Sort Children
+        [MenuItem("GameObject/Sort Children")]
+        private static void SortChildren()
+        {
+            // Get references
+            GameObject selectedObject = Selection.activeGameObject;
+            int childCount = selectedObject.transform.childCount;
+            Transform[] children = new Transform[childCount];
+            
+            // Register hierarchy for undo/redo
+            Undo.RegisterFullObjectHierarchyUndo(selectedObject, "Sort Children");
+
+            // Store the children in an array
+            for (int i = 0; i < childCount; i++)
+            {
+                children[i] = selectedObject.transform.GetChild(i);
+            }
+
+            // Sort the children by their names
+            System.Array.Sort(children, 
+                (a, b) => string.Compare(a.name, b.name));
+
+            // Reassign the sorted children back to their parent
+            for (int i = 0; i < childCount; i++)
+            {
+                children[i].SetSiblingIndex(i);
+            }
+        } 
+    
+        [MenuItem("GameObject/Sort Children", true)]
+        private static bool SortChildrenValidator()
+        {
+            return Selection.activeGameObject != null &&
+                Selection.activeTransform.childCount > 0;
+        }
+        #endregion
+
         public static void DestroyAllChildren(this GameObject target)
         {
             foreach (Transform transform in target.GetComponentInChildren<Transform>())
