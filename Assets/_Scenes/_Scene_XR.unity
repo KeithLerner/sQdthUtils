@@ -836,6 +836,7 @@ GameObject:
   - component: {fileID: 1078249300}
   - component: {fileID: 1078249299}
   - component: {fileID: 1078249298}
+  - component: {fileID: 1078249301}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Untagged
@@ -889,6 +890,50 @@ Transform:
   - {fileID: 1769048473}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1078249301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078249297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 588a0556178891a46941a84ce91d3c70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left: {fileID: 195765543}
+  right: {fileID: 2131207605}
+  onLeftActivateAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1078249301}
+        m_TargetAssemblyTypeName: SqdthUtils.OpenXR.XRControllerInputManager, Assembly-CSharp
+        m_MethodName: DebugCallbackContext
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onRightActivateAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1078249301}
+        m_TargetAssemblyTypeName: SqdthUtils.OpenXR.XRControllerInputManager, Assembly-CSharp
+        m_MethodName: DebugCallbackContext
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1141641174
 GameObject:
   m_ObjectHideFlags: 0
