@@ -13,16 +13,16 @@ namespace SqdthUtils.OpenXR
     {
         public static XRControllerInputManager Singleton;
 
+        public float gripL;
+        public float gripR;
+
         public InputDevice LeftInputDevice { get; private set; }
         public InputDevice RightInputDevice { get; private set; }
-        
-        public ActionBasedController LeftController { get; private set; }
-        public ActionBasedController RightController { get; private set; }
 
         public UnityEvent<InputAction.CallbackContext> onLeftActivateAction;
         public UnityEvent<InputAction.CallbackContext> onRightActivateAction;
 
-        private void Awake()
+        private void Start()
         {
             // Set up singleton instance
             if (Singleton == null)
@@ -36,6 +36,13 @@ namespace SqdthUtils.OpenXR
                 return;
             }
             
+            // Get XR input devices
+            LeftInputDevice = XR.InputDevices.GetDeviceAtXRNode(XR.XRNode.LeftHand);
+            RightInputDevice = XR.InputDevices.GetDeviceAtXRNode(XR.XRNode.RightHand);
+            
+            Debug.Log(LeftInputDevice.name);
+            Debug.Log(RightInputDevice.name);
+            
             // TESTING
             var inputDevices = new List<InputDevice>();
             XR.InputDevices.GetDevices(inputDevices);
@@ -48,19 +55,10 @@ namespace SqdthUtils.OpenXR
         private void Update()
         {
             // TESTING
-            string debug = "";
-            float grip;
-            if (LeftInputDevice.TryGetFeatureValue(XR.CommonUsages.grip,
-                    out grip))
-            {
-                debug += $"Left: {grip}\n";
-            }
-            if (RightInputDevice.TryGetFeatureValue(XR.CommonUsages.grip,
-                    out grip))
-            {
-                debug += $"Right: {grip}";
-            }
-            Debug.Log(debug);
+            LeftInputDevice.TryGetFeatureValue(XR.CommonUsages.grip,
+                out gripL);
+            RightInputDevice.TryGetFeatureValue(XR.CommonUsages.grip,
+                out gripR);
         }
 
         public void DebugCallbackContext(InputAction.CallbackContext context)
@@ -76,56 +74,6 @@ namespace SqdthUtils.OpenXR
         private void OnRightActivateAction(InputAction.CallbackContext context)
         {
             onRightActivateAction?.Invoke(context);
-        }
-
-        private void OnEnable()
-        {
-            // Get XR input devices
-            LeftInputDevice = XR.InputDevices.GetDeviceAtXRNode(XR.XRNode.LeftHand);
-            RightInputDevice = XR.InputDevices.GetDeviceAtXRNode(XR.XRNode.RightHand);
-
-            // Get action based controllers
-            ActionBasedController[] controllers =
-                GetComponentsInChildren<ActionBasedController>();
-            foreach (ActionBasedController abc in controllers)
-            {
-                if (abc.gameObject.name.ToLower().Contains("left"))
-                {
-                    LeftController = abc;
-                }
-                else if (abc.gameObject.name.ToLower().Contains("right"))
-                {
-                    RightController = abc;
-                }
-            }
-            
-            // Set up action based controller events if controllers were found
-            if (LeftController == null)
-            {
-                Debug.LogError("Failed to find Left Action Based Controller.");
-            }
-            else
-            {
-                LeftController.activateAction.action.performed +=
-                    OnLeftActivateAction;
-            }
-            if (RightController == null)
-            {
-                Debug.LogError("Failed to find Right Action Based Controller.");
-            }
-            else
-            {
-                RightController.activateAction.action.performed +=
-                    OnRightActivateAction;
-            }
-        }
-
-        private void OnDisable()
-        {
-            LeftController.activateAction.action.performed -= 
-                OnLeftActivateAction;
-            RightController.activateAction.action.performed -= 
-                OnRightActivateAction;
         }
     }
 }
