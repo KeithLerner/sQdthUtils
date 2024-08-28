@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -26,22 +27,8 @@ namespace SqdthUtils.OpenXR
                     "destroying duplicate instances.");
                 Destroy(gameObject);
             }
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-            left.activateAction.action.performed +=
-                context =>
-                {
-                    onLeftActivateAction?.Invoke(context);
-                };
-        
-            right.activateAction.action.performed +=
-                context =>
-                {
-                    onRightActivateAction?.Invoke(context);
-                };
+            
+            Debug.Log(left.);
         }
 
         public void DebugCallbackContext(InputAction.CallbackContext context)
@@ -49,5 +36,26 @@ namespace SqdthUtils.OpenXR
             Debug.Log(context.action.name);
         }
 
+        private void OnLeftActivateAction(InputAction.CallbackContext context)
+        {
+            onLeftActivateAction?.Invoke(context);
+        }
+        
+        private void OnRightActivateAction(InputAction.CallbackContext context)
+        {
+            onRightActivateAction?.Invoke(context);
+        }
+
+        private void OnEnable()
+        {
+            left.activateAction.action.performed += OnLeftActivateAction;
+            right.activateAction.action.performed += OnRightActivateAction;
+        }
+
+        private void OnDisable()
+        {
+            left.activateAction.action.performed -= OnLeftActivateAction;
+            right.activateAction.action.performed -= OnRightActivateAction;
+        }
     }
 }
