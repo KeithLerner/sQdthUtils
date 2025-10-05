@@ -50,10 +50,12 @@ namespace SqdthUtils.PrefabSpawner.Editor
                 rootVisualElement.Q<ObjectField>("SpawnablePrefab");
             raycastLayerMask = 
                 rootVisualElement.Q<LayerMaskField>("RaycastLayerMask");
-            parentTransform = rootVisualElement.Q<ObjectField>("ParentTransform");
+            parentTransform =
+                rootVisualElement.Q<ObjectField>("ParentTransform");
             minRotation = rootVisualElement.Q<Vector3Field>("MinRotation");
             maxRotation = rootVisualElement.Q<Vector3Field>("MaxRotation");
-            alignToNormals = rootVisualElement.Q<ToolbarToggle>("SnapToGrid");
+            alignToNormals =
+                rootVisualElement.Q<ToolbarToggle>("AlignToSurfaceNormals");
             spawnAsPrefab = rootVisualElement.Q<ToolbarToggle>("SpawnAsPrefab");
             gridSnapped = rootVisualElement.Q<ToolbarToggle>("SnapToGrid");
             active = rootVisualElement.Q<Toggle>("Active");
@@ -116,16 +118,10 @@ namespace SqdthUtils.PrefabSpawner.Editor
 
             if (hit.collider)
             {
-                GameObject go;
                 Transform parent = (Transform)parentTransform.value;
-                if (spawnAsPrefab.value)
-                {
-                    go = SpawnAsPrefab(parent);
-                }
-                else
-                {
-                    go = SpawnAsGameObject(parent);
-                }
+                GameObject go = spawnAsPrefab.value 
+                    ? SpawnAsPrefab(parent) 
+                    : SpawnAsGameObject(parent);
                 
                 // Set position
                 go.transform.position = 
@@ -138,17 +134,12 @@ namespace SqdthUtils.PrefabSpawner.Editor
                     Random.Range(minRotation.value.x, maxRotation.value.x),
                     Random.Range(minRotation.value.y, maxRotation.value.y),
                     Random.Range(minRotation.value.z, maxRotation.value.z));
-                    
-                if (alignToNormals.value)
-                {
+                
+                go.transform.rotation = alignToNormals.value 
                     // Set random rotation based on normals
-                    go.transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal + offset);
-                }
-                else
-                {
+                    ? Quaternion.FromToRotation(Vector3.up, hit.normal + offset)
                     // Set random rotation based on default rotation
-                    go.transform.rotation = Quaternion.Euler(Vector3.zero + offset);
-                }
+                    : Quaternion.Euler(Vector3.zero + offset);
             }
         }
 
